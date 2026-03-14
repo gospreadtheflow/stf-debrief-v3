@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>STF Event Debrief | Spread The Flow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap');
+
+  :root {
+    --orange: #C85A00;
+    --orange-light: #E86A00;
+    --teal: #1AAECC;
+    --teal-dim: #127a91;
+    --bg: #0d0d0d;
+    --surface: #181818;
+    --surface2: #222222;
+    --surface3: #2a2a2a;
+    --border: #333333;
+    --border-focus: #C85A00;
+    --text: #f0f0f0;
+    --text-dim: #aaaaaa;
+    --text-label: #cccccc;
+    --success: #2ecc71;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(180deg, #000 0%, #0d0d0d 100%);
+    border-bottom: 2px solid var(--orange);
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+
+  .header img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 12px rgba(200,90,0,0.5));
+  }
+
+  .header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── FORM WRAPPER ── */
+  form {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-top: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num {
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .section-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── FIELDS ── */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="number"],
+  textarea,
+  select {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    padding: 12px 14px;
+    width: 100%;
+    -webkit-appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  input[type="time"]:focus,
+  input[type="number"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(200,90,0,0.15);
+  }
+
+  input[type="date"],
+  input[type="time"] {
+    color-scheme: dark;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* ── YES/NO + DETAIL ── */
+  .yn-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .yn-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .yn-options {
+    display: flex;
+    gap: 10px;
+  }
+
+  .yn-options label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--text-dim);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .yn-options input[type="radio"] {
+    accent-color: var(--orange);
+    width: 18px;
+    height: 18px;
+  }
+
+  .yn-options label:has(input:checked) {
+    border-color: var(--orange);
+    color: var(--orange-light);
+    background: rgba(200,90,0,0.1);
+  }
+
+  .yn-detail {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    padding: 10px 14px;
+    width: 100%;
+    resize: vertical;
+    min-height: 60px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .yn-detail:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(200,90,0,0.15);
+  }
+
+  .yn-detail-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ── RATING ── */
+  .rating-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .rating-row label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-dim);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+  }
+
+  .rating-row input[type="radio"] {
+    accent-color: var(--orange);
+    width: 18px;
+    height: 18px;
+  }
+
+  .rating-row label:has(input:checked) {
+    border-color: var(--orange);
+    color: var(--orange-light);
+    background: rgba(200,90,0,0.1);
+  }
+
+  .rating-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+
+  label:has(input:checked) .rating-num {
+    color: var(--orange-light);
+  }
+
+  /* ── CHECKBOX GROUP ── */
+  .cb-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .cb-group-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .cb-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cb-option input[type="checkbox"] {
+    accent-color: var(--orange);
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .cb-option span {
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .cb-option:has(input:checked) {
+    border-color: var(--orange);
+    background: rgba(200,90,0,0.08);
+  }
+
+  /* ── CONTENT CAPTURE GRID ── */
+  .capture-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .capture-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .capture-row-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .capture-options {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .capture-options label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--text-dim);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .capture-options input[type="radio"] {
+    accent-color: var(--orange);
+    width: 16px;
+    height: 16px;
+  }
+
+  .capture-options label:has(input:checked) {
+    border-color: var(--orange);
+    color: var(--orange-light);
+    background: rgba(200,90,0,0.1);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── HELPER TEXT ── */
+  .helper {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: -6px;
+  }
+
+  /* ── SUBMIT ── */
+  .submit-wrap {
+    margin-top: 30px;
+    padding: 0 0 20px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 18px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(200,90,0,0.35);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .submit-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(200,90,0,0.25);
+  }
+
+  /* ── SUCCESS STATE ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .success-screen.visible { display: block; }
+
+  .success-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .success-screen h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .success-screen p {
+    color: var(--text-dim);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── TEAL ACCENT ── */
+  .teal { color: var(--teal); }
+
+  /* ── FIRE DIVIDER ── */
+  .fire-divider {
+    text-align: center;
+    margin: 28px 0 4px;
+    color: var(--orange);
+    font-size: 18px;
+    letter-spacing: 0.3em;
+    opacity: 0.4;
+  }
+
+  /* Placeholder styling */
+  ::placeholder { color: #555; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img src="https://i.imgur.com/placeholder.png" alt="STF Logo" id="stf-logo" onerror="this.style.display='none'">
+  <h1>Event Debrief</h1>
+  <div class="subtitle">Spread The Flow LLC &nbsp;·&nbsp; Complete after every event</div>
+</div>
+
+<!-- SUCCESS SCREEN (hidden until submit) -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">🔥</div>
+  <h2>Debrief Submitted</h2>
+  <p>Your report has been logged. Good work tonight — get some rest.</p>
+</div>
+
+<!-- FORM -->
+<form id="debrief-form" action="https://api.sheetmonkey.io/form/gfYmfvvn87BbTJJoDwXPMP" method="POST">
+
+  <!-- 1 — EVENT OVERVIEW -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Event Overview</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="event_date">Date</label>
+        <input type="date" id="event_date" name="Event Date" required>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="start_time">Start Time</label>
+          <input type="time" id="start_time" name="Start Time" required>
+        </div>
+        <div class="field">
+          <label for="end_time">End Time</label>
+          <input type="time" id="end_time" name="End Time" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="venue_name">Venue Name</label>
+        <input type="text" id="venue_name" name="Venue Name" placeholder="e.g. Riptidez Wellington" required>
+      </div>
+
+      <div class="field">
+        <label for="instructor_names">Instructor Name(s)</label>
+        <input type="text" id="instructor_names" name="Instructor Names" placeholder="All instructors present tonight" required>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="attendance">Est. Attendance</label>
+          <input type="number" id="attendance" name="Estimated Attendance" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label for="waivers">Waivers Collected</label>
+          <input type="number" id="waivers" name="Waivers Collected" placeholder="0" min="0">
+        </div>
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">Newcomers Present?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Newcomers Present" value="Yes"> Yes</label>
+          <label><input type="radio" name="Newcomers Present" value="No"> No</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2 — FIRE CIRCLE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Fire Circle</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Fire Circle Held?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Fire Circle Held" value="Yes"> Yes</label>
+          <label><input type="radio" name="Fire Circle Held" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fire_circle_time">Start Time + Duration</label>
+        <input type="text" id="fire_circle_time" name="Fire Circle Start and Duration" placeholder="e.g. 10:30pm · ~45 min">
+      </div>
+
+      <div class="field">
+        <label for="fire_circle_notes">Notes</label>
+        <textarea id="fire_circle_notes" name="Fire Circle Notes" placeholder="Reason if not held, crowd response, observations…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3 — EQUIPMENT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Equipment</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Equipment Issues?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Equipment Issues" value="Yes"> Yes</label>
+          <label><input type="radio" name="Equipment Issues" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="equipment_detail">Detail</label>
+        <textarea id="equipment_detail" name="Equipment Issue Detail" placeholder="Describe any issues if applicable…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4 — FUEL LOG -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Fuel Log</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="fuel_type">Fuel Type</label>
+        <input type="text" id="fuel_type" name="Fuel Type" placeholder="e.g. White gas, Naphtha, Lamp oil">
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="fuel_used">Amount Used</label>
+          <input type="text" id="fuel_used" name="Fuel Amount Used" placeholder="oz / ml">
+        </div>
+        <div class="field">
+          <label for="fuel_remaining">Amount Remaining</label>
+          <input type="text" id="fuel_remaining" name="Fuel Amount Remaining" placeholder="oz / ml">
+        </div>
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">Any Spills or Safety Concerns?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Fuel Safety Concern" value="Yes"> Yes</label>
+          <label><input type="radio" name="Fuel Safety Concern" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fuel_concern_detail">Detail</label>
+        <textarea id="fuel_concern_detail" name="Fuel Safety Concern Detail" placeholder="Describe any spills or concerns if applicable…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5 — VIBE & ENERGY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Vibe &amp; Energy</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Energy / Vibe Rating</div>
+        <div class="rating-row">
+          <label>
+            <div class="rating-num">1</div>
+            <input type="radio" name="Vibe Rating" value="1">
+            Low
+          </label>
+          <label>
+            <div class="rating-num">2</div>
+            <input type="radio" name="Vibe Rating" value="2">
+            &nbsp;
+          </label>
+          <label>
+            <div class="rating-num">3</div>
+            <input type="radio" name="Vibe Rating" value="3">
+            Solid
+          </label>
+          <label>
+            <div class="rating-num">4</div>
+            <input type="radio" name="Vibe Rating" value="4">
+            &nbsp;
+          </label>
+          <label>
+            <div class="rating-num">5</div>
+            <input type="radio" name="Vibe Rating" value="5">
+            🔥
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="vibe_notes">Vibe Notes</label>
+        <textarea id="vibe_notes" name="Vibe Notes" placeholder="How was the energy? What drove it up or down?"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 6 — VENUE FEEDBACK -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Venue Feedback</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="venue_feedback">Venue Staff / Management Response</label>
+        <textarea id="venue_feedback" name="Venue Feedback" placeholder="How did venue staff respond? Any feedback from management?"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7 — CONTENT CAPTURED -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">Content Captured</div>
+    </div>
+    <div class="section-body">
+
+      <div class="capture-grid">
+        <div class="capture-row">
+          <div class="capture-row-label">Photos</div>
+          <div class="capture-options">
+            <label><input type="radio" name="Photos Captured" value="Yes"> Yes</label>
+            <label><input type="radio" name="Photos Captured" value="No"> No</label>
+          </div>
+        </div>
+
+        <div class="capture-row">
+          <div class="capture-row-label">Video</div>
+          <div class="capture-options">
+            <label><input type="radio" name="Video Captured" value="Yes"> Yes</label>
+            <label><input type="radio" name="Video Captured" value="No"> No</label>
+          </div>
+        </div>
+
+        <div class="capture-row">
+          <div class="capture-row-label">Sent to Admin</div>
+          <div class="capture-options">
+            <label><input type="radio" name="Content Sent to Admin" value="Yes"> Yes</label>
+            <label><input type="radio" name="Content Sent to Admin" value="No"> No</label>
+            <label><input type="radio" name="Content Sent to Admin" value="Pending"> Pending</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 8 — INCIDENTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">Incidents</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Any Incidents Tonight?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Incidents Occurred" value="Yes"> Yes</label>
+          <label><input type="radio" name="Incidents Occurred" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">Incident Report Filed?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Incident Report Filed" value="Yes"> Yes</label>
+          <label><input type="radio" name="Incident Report Filed" value="No"> No</label>
+          <label><input type="radio" name="Incident Report Filed" value="N/A"> N/A</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 9 — REFLECTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div class="section-title">Reflection</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="went_well">What Went Well Tonight?</label>
+        <textarea id="went_well" name="What Went Well" placeholder="Wins, highlights, moments worth noting…"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="improve">What Could Be Improved?</label>
+        <textarea id="improve" name="What Could Be Improved" placeholder="Honest feedback — what would you do differently?"></textarea>
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">Follow-Up Needed?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Follow Up Needed" value="Yes"> Yes</label>
+          <label><input type="radio" name="Follow Up Needed" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="followup_detail">Follow-Up Detail</label>
+        <textarea id="followup_detail" name="Follow Up Detail" placeholder="What needs to happen and who owns it?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="general_notes">General Notes</label>
+        <textarea id="general_notes" name="General Notes" placeholder="Anything else worth logging…"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 10 — SIGNATURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title">Signature</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="instructor_signature">Instructor Name (Typed Signature)</label>
+        <input type="text" id="instructor_signature" name="Instructor Signature" placeholder="Type your full name" required>
+      </div>
+
+      <p class="helper">By typing your name above, you confirm this debrief is accurate and complete.</p>
+
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn">Submit Debrief 🔥</button>
+  </div>
+
+</form>
+
+<script>
+  // Attempt to load the STF logo from project path (works when hosted locally)
+  // If it fails, the onerror handler hides it gracefully
+
+  const form = document.getElementById('debrief-form');
+  const successScreen = document.getElementById('success-screen');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = form.querySelector('.submit-btn');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        successScreen.classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Submission Failed — Try Again';
+        btn.disabled = false;
+        btn.style.background = '#c0392b';
+        alert('Something went wrong. Check your connection and try again.');
+      }
+    } catch (err) {
+      btn.textContent = 'Submission Failed — Try Again';
+      btn.disabled = false;
+      btn.style.background = '#c0392b';
+      alert('Network error. Make sure you are connected to the internet.');
+    }
+  });
+</script>
+
+</body>
+</html>
