@@ -287,7 +287,10 @@
     font-size: 22px; font-weight: 600;
     color: var(--text); letter-spacing: 0.02em;
   }
-  .spinner-time {
+  .spinner-nick {
+    font-size: 14px; color: var(--teal);
+    font-style: italic; margin-top: 2px;
+  }.spinner-time {
     font-size: 12px; color: var(--text-dim);
     text-align: right;
   }
@@ -551,7 +554,7 @@ form.addEventListener('submit', async function(e) {
   const first    = data.get('First Name').trim();
   const last     = data.get('Last Name').trim();
   const nickname = data.get('Nickname').trim();
-  const displayName = nickname || (first + ' ' + last.charAt(0).toUpperCase() + '.');
+  const displayName = nickname ? (first + ' ' + last + ' — "' + nickname + '"') : (first + ' ' + last);
   const timeStr  = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
 
   try {
@@ -640,7 +643,19 @@ function renderBoard() {
     <div class="spinner-card">
       <div>
         <div class="spinner-num">#${list.length - i}</div>
-        <div class="spinner-name">${escapeHtml(s.name)}</div>
+        const parts = s.name.split(' — ');
+   const fullName = parts[0];
+   const nick = parts[1] ? parts[1] : null;
+   return `
+   <div class="spinner-card">
+     <div>
+       <div class="spinner-num">#${list.length - i}</div>
+       <div class="spinner-name">${escapeHtml(fullName)}</div>
+       ${nick ? `<div class="spinner-nick">${escapeHtml(nick)}</div>` : ''}
+     </div>
+     <div class="spinner-time">${escapeHtml(s.time)}</div>
+   </div>`;
+   }).join('');
       </div>
       <div class="spinner-time">${escapeHtml(s.time)}</div>
     </div>
