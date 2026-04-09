@@ -537,7 +537,7 @@
 </div>
 
 <!-- FORM -->
-<form id="debrief-form" action="https://api.sheetmonkey.io/form/gfYmfvvn87BbTJJoDwXPMP" method="POST">
+<form id="debrief-form" action="YOUR_SHEETMONKEY_URL" method="POST">
 
   <!-- 1 — EVENT OVERVIEW -->
   <div class="section">
@@ -575,12 +575,19 @@
 
       <div class="row-2">
         <div class="field">
-          <label for="attendance">Est. Attendance</label>
-          <input type="number" id="attendance" name="Estimated Attendance" placeholder="0" min="0">
-        </div>
-        <div class="field">
           <label for="waivers">Waivers Collected</label>
           <input type="number" id="waivers" name="Waivers Collected" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label for="max_attendance">Max Attendance</label>
+          <input type="number" id="max_attendance" name="Max Attendance" placeholder="Peak headcount" min="0">
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="avg_attendance">Avg Attendance</label>
+          <input type="number" id="avg_attendance" name="Avg Attendance" placeholder="Avg throughout night" min="0">
         </div>
       </div>
 
@@ -663,12 +670,12 @@
 
       <div class="row-2">
         <div class="field">
-          <label for="fuel_used">Amount Used</label>
-          <input type="text" id="fuel_used" name="Fuel Amount Used" placeholder="oz / ml">
+          <label for="fuel_used">Amount Used (gal)</label>
+          <input type="text" id="fuel_used" name="Fuel Amount Used" placeholder="gallons">
         </div>
         <div class="field">
-          <label for="fuel_remaining">Amount Remaining</label>
-          <input type="text" id="fuel_remaining" name="Fuel Amount Remaining" placeholder="oz / ml">
+          <label for="fuel_remaining">Amount Remaining (gal)</label>
+          <input type="text" id="fuel_remaining" name="Fuel Amount Remaining" placeholder="gallons">
         </div>
       </div>
 
