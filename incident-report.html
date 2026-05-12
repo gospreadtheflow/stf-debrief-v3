@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>STF Incident Report | Spread The Flow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap');
+
+  :root {
+    --orange: #C85A00;
+    --orange-light: #E86A00;
+    --teal: #1AAECC;
+    --bg: #0d0d0d;
+    --surface: #181818;
+    --surface2: #222222;
+    --surface3: #2a2a2a;
+    --border: #333333;
+    --border-focus: #C85A00;
+    --text: #f0f0f0;
+    --text-dim: #aaaaaa;
+    --text-label: #cccccc;
+    --red: #e74c3c;
+    --red-dim: #7b241c;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(180deg, #000 0%, #0d0d0d 100%);
+    border-bottom: 2px solid var(--red);
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+  .header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 13px; color: var(--red);
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .header .instruction {
+    font-size: 12px; color: var(--text-dim);
+    margin-top: 6px; font-style: italic;
+  }
+
+  /* ── FORM WRAPPER ── */
+  form {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-top: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-num {
+    background: var(--red);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px; font-weight: 700;
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .section-body {
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  /* ── FIELDS ── */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  label {
+    font-size: 13px; font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em; text-transform: uppercase;
+  }
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  input[type="email"],
+  input[type="tel"],
+  textarea, select {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    padding: 12px 14px;
+    width: 100%;
+    -webkit-appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(200,90,0,0.15);
+  }
+  input[type="date"], input[type="time"] { color-scheme: dark; }
+  textarea { resize: vertical; min-height: 100px; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .helper { font-size: 12px; color: var(--text-dim); font-style: italic; margin-top: -6px; }
+
+  /* ── YES/NO ── */
+  .yn-block { display: flex; flex-direction: column; gap: 8px; }
+  .yn-label {
+    font-size: 13px; font-weight: 600;
+    color: var(--text-label);
+    letter-spacing: 0.03em; text-transform: uppercase;
+  }
+  .yn-options { display: flex; gap: 10px; }
+  .yn-options label {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px; cursor: pointer;
+    font-size: 15px; font-weight: 600; text-transform: none; letter-spacing: normal;
+    color: var(--text-dim); transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .yn-options input[type="radio"] { accent-color: var(--orange); width: 18px; height: 18px; }
+  .yn-options label:has(input:checked) {
+    border-color: var(--orange); color: var(--orange-light);
+    background: rgba(200,90,0,0.1);
+  }
+
+  /* ── CHECKBOX GROUP ── */
+  .cb-group { display: flex; flex-direction: column; gap: 6px; }
+  .cb-label {
+    font-size: 13px; font-weight: 600; color: var(--text-label);
+    letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 2px;
+  }
+  .cb-option {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 14px; cursor: pointer;
+    transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+  }
+  .cb-option input[type="checkbox"] {
+    accent-color: var(--red); width: 20px; height: 20px; flex-shrink: 0;
+  }
+  .cb-option span { font-size: 15px; color: var(--text); }
+  .cb-option:has(input:checked) {
+    border-color: var(--red); background: rgba(231,76,60,0.08);
+  }
+
+  /* ── SUBMIT ── */
+  .submit-wrap { margin-top: 28px; }
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--red) 0%, #c0392b 100%);
+    border: none; border-radius: 8px; color: #fff; cursor: pointer;
+    font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700;
+    letter-spacing: 0.1em; padding: 18px; text-transform: uppercase;
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(231,76,60,0.35);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit-btn:not(:disabled):active { transform: scale(0.98); }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none; text-align: center;
+    padding: 70px 24px; max-width: 500px; margin: 0 auto;
+  }
+  .success-screen.visible { display: block; }
+  .success-icon { font-size: 60px; margin-bottom: 20px; }
+  .success-screen h2 {
+    font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700;
+    color: var(--teal); margin-bottom: 12px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .success-screen p { color: var(--text-dim); font-size: 16px; line-height: 1.6; }
+
+  /* ── ALERT BANNER ── */
+  .alert-banner {
+    background: rgba(231,76,60,0.15);
+    border: 1px solid var(--red);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 13px; color: #f1948a;
+    line-height: 1.5;
+  }
+
+  ::placeholder { color: #555; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Incident / Accident Report</h1>
+  <div class="subtitle">Spread The Flow LLC</div>
+  <div class="instruction">Complete same night. Be specific. Retain for records.</div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">📋</div>
+  <h2>Report Submitted</h2>
+  <p>Your incident report has been logged. Notify Jake immediately if you have not already done so.</p>
+</div>
+
+<!-- FORM -->
+<form id="incident-form" action="https://api.sheetmonkey.io/form/3V4oU8GRVH186V3GSDyRVb" method="POST">
+
+  <div class="alert-banner" style="margin: 20px 16px 0; max-width: 640px; margin-left: auto; margin-right: auto;">
+    ⚠️ If this is a medical emergency, call 911 first. Complete this form after the situation is under control.
+  </div>
+
+  <!-- 1 — EVENT INFORMATION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Event Information</div>
+    </div>
+    <div class="section-body">
+
+      <div class="row-2">
+        <div class="field">
+          <label>Date of Incident</label>
+          <div class="row-3">
+            <select name="Incident Day" required>
+              <option value="">Day</option>
+              <option>01</option><option>02</option><option>03</option><option>04</option><option>05</option>
+              <option>06</option><option>07</option><option>08</option><option>09</option><option>10</option>
+              <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+              <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+              <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
+              <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option>
+              <option>31</option>
+            </select>
+            <select name="Incident Month" required>
+              <option value="">Month</option>
+              <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+              <option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option>
+              <option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option>
+              <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+            </select>
+            <select name="Incident Year" required>
+              <option value="">Year</option>
+              <option>2025</option><option>2026</option><option>2027</option><option>2028</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="incident_time">Time of Incident</label>
+          <input type="time" id="incident_time" name="Time of Incident" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="venue_name">Venue Name</label>
+        <input type="text" id="venue_name" name="Venue Name" placeholder="e.g. Hava Kava" required>
+      </div>
+
+      <div class="field">
+        <label for="venue_address">Venue Address</label>
+        <input type="text" id="venue_address" name="Venue Address" placeholder="Full address">
+      </div>
+
+      <div class="field">
+        <label for="instructor_name">Instructor Completing This Form</label>
+        <input type="text" id="instructor_name" name="Instructor Name" placeholder="Your full name" required>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 2 — INCIDENT TYPE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Incident Type</div>
+    </div>
+    <div class="section-body">
+
+      <div class="cb-group">
+        <div class="cb-label">Select all that apply</div>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Injury" value="Yes">
+          <span>Injury</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Prop Malfunction" value="Yes">
+          <span>Prop Malfunction</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Fuel Spill" value="Yes">
+          <span>Fuel Spill</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Behavioral Issue" value="Yes">
+          <span>Behavioral Issue</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Fire Safety Concern" value="Yes">
+          <span>Fire Safety Concern</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Near Miss" value="Yes">
+          <span>Near Miss</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Incident Type - Other" value="Yes">
+          <span>Other</span>
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="incident_type_other">If Other, describe</label>
+        <input type="text" id="incident_type_other" name="Incident Type Other Detail" placeholder="Describe the incident type">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3 — PERSON(S) INVOLVED -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Person(s) Involved</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="person_name">Full Name</label>
+        <input type="text" id="person_name" name="Person Involved Name" placeholder="Full name of person involved">
+      </div>
+
+      <div class="field">
+        <label for="person_contact">Contact Phone / Email</label>
+        <input type="text" id="person_contact" name="Person Involved Contact" placeholder="Phone number or email">
+      </div>
+
+      <div class="cb-group">
+        <div class="cb-label">Role — Select all that apply</div>
+        <label class="cb-option">
+          <input type="checkbox" name="Role - Instructor" value="Yes">
+          <span>Instructor</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Role - Participant" value="Yes">
+          <span>Participant</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Role - Spectator" value="Yes">
+          <span>Spectator</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Role - Staff" value="Yes">
+          <span>Staff</span>
+        </label>
+        <label class="cb-option">
+          <input type="checkbox" name="Role - Other" value="Yes">
+          <span>Other</span>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4 — INCIDENT DETAILS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Incident Details</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="location_onsite">Location On-Site</label>
+        <input type="text" id="location_onsite" name="Location On-Site" placeholder="e.g. Near fire circle, inside venue, parking lot">
+      </div>
+
+      <div class="field">
+        <label for="description">Description of What Happened</label>
+        <textarea id="description" name="Incident Description" placeholder="Be specific — sequence of events, prop involved, how injury occurred, etc." style="min-height:130px;" required></textarea>
+      </div>
+
+      <div class="field">
+        <label for="immediate_action">Immediate Action Taken</label>
+        <textarea id="immediate_action" name="Immediate Action Taken" placeholder="What did you do right away?"></textarea>
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">Medical Attention Required?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Medical Attention Required" value="Yes"> Yes</label>
+          <label><input type="radio" name="Medical Attention Required" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="medical_type">If Yes — Type of Medical Attention</label>
+        <input type="text" id="medical_type" name="Medical Attention Type" placeholder="e.g. First aid on-site, urgent care, ER">
+      </div>
+
+      <div class="yn-block">
+        <div class="yn-label">911 Called?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="911 Called" value="Yes"> Yes</label>
+          <label><input type="radio" name="911 Called" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="agency_response">If Yes — Agency and Response Time</label>
+        <input type="text" id="agency_response" name="Agency and Response Time" placeholder="e.g. Fire Rescue, arrived ~8 min">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5 — EQUIPMENT INVOLVED -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Equipment Involved</div>
+    </div>
+    <div class="section-body">
+
+      <div class="row-3">
+        <div class="field">
+          <label for="prop_type">Prop Type</label>
+          <input type="text" id="prop_type" name="Prop Type" placeholder="e.g. Poi, Staff">
+        </div>
+        <div class="field">
+          <label for="fuel_type">Fuel Type</label>
+          <input type="text" id="fuel_type" name="Fuel Type" placeholder="e.g. White gas">
+        </div>
+        <div class="field">
+          <label for="equip_condition">Condition</label>
+          <input type="text" id="equip_condition" name="Equipment Condition" placeholder="e.g. Good, Damaged">
+        </div>
+      </div>
+
+      <p class="helper">Leave blank if no equipment was involved.</p>
+
+    </div>
+  </div>
+
+  <!-- 6 — WITNESSES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Witnesses</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Witnesses Present?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Witnesses Present" value="Yes"> Yes</label>
+          <label><input type="radio" name="Witnesses Present" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="witness_info">Witness Name(s) and Contact Info</label>
+        <textarea id="witness_info" name="Witness Info" placeholder="Name, phone or email for each witness"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7 — EVENT CONTINUATION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">Event Continuation</div>
+    </div>
+    <div class="section-body">
+
+      <div class="yn-block">
+        <div class="yn-label">Did the Event Continue After the Incident?</div>
+        <div class="yn-options">
+          <label><input type="radio" name="Event Continued" value="Yes"> Yes</label>
+          <label><input type="radio" name="Event Continued" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="continuation_reason">If No — Reason</label>
+        <input type="text" id="continuation_reason" name="Event Continuation Reason" placeholder="Why was the event stopped?">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 8 — SIGNATURE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title">Signature</div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label for="instructor_signature">Instructor Name (Typed Signature)</label>
+        <input type="text" id="instructor_signature" name="Instructor Signature" placeholder="Type your full name" required>
+      </div>
+
+      <div class="field">
+        <label for="witness_signature">Witness Name (if available)</label>
+        <input type="text" id="witness_signature" name="Witness Signature" placeholder="Witness full name if present">
+      </div>
+
+      <div class="field">
+        <label>Date Signed</label>
+        <div class="row-3">
+          <select name="Date Signed Day" required>
+            <option value="">Day</option>
+            <option>01</option><option>02</option><option>03</option><option>04</option><option>05</option>
+            <option>06</option><option>07</option><option>08</option><option>09</option><option>10</option>
+            <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+            <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+            <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
+            <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option>
+            <option>31</option>
+          </select>
+          <select name="Date Signed Month" required>
+            <option value="">Month</option>
+            <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+            <option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option>
+            <option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option>
+            <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+          </select>
+          <select name="Date Signed Year" required>
+            <option value="">Year</option>
+            <option>2025</option><option>2026</option><option>2027</option><option>2028</option>
+          </select>
+        </div>
+      </div>
+
+      <input type="hidden" name="Submission Time" id="submission-time">
+
+      <p class="helper">By typing your name, you confirm this report is accurate and complete to the best of your knowledge.</p>
+
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn" id="submit-btn">Submit Incident Report</button>
+  </div>
+
+</form>
+
+<script>
+  const form = document.getElementById('incident-form');
+  const successScreen = document.getElementById('success-screen');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    document.getElementById('submission-time').value = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        successScreen.classList.add('visible');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Submission Failed — Try Again';
+        btn.disabled = false;
+        btn.style.background = '#7b241c';
+        alert('Something went wrong. Check your connection and try again.');
+      }
+    } catch (err) {
+      btn.textContent = 'Submission Failed — Try Again';
+      btn.disabled = false;
+      btn.style.background = '#7b241c';
+      alert('Network error. Make sure you are connected to the internet.');
+    }
+  });
+</script>
+
+</body>
+</html>
